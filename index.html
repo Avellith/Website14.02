@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pytanie 1</title>
+  <title>Scam site 1 💗</title>
+
   <style>
     body{
       margin:0;
@@ -11,112 +12,125 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      font-family: system-ui, Arial, sans-serif;
-      background:#0b1020;
-      color:#fff;
-    }
-    .card{
-      width:min(600px, 92vw);
-      padding:32px;
-      border-radius:20px;
-      background:rgba(255,255,255,0.06);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-      text-align:center;
-      position:relative;
+      font-family: "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
+      background: linear-gradient(135deg, #ffb6d5, #ffd6e8);
       overflow:hidden;
     }
+
+    /* SERDUSZKA W TLE */
+    .hearts span{
+      position:absolute;
+      bottom:-20px;
+      color:#ff5fa2;
+      font-size:20px;
+      animation: floatUp linear infinite;
+      opacity:0.8;
+    }
+
+    @keyframes floatUp{
+      from{
+        transform: translateY(0) scale(1);
+        opacity:1;
+      }
+      to{
+        transform: translateY(-110vh) scale(1.6);
+        opacity:0;
+      }
+    }
+
+    .card{
+      background: #fff;
+      padding: 36px;
+      border-radius: 26px;
+      text-align: center;
+      width: min(420px, 90vw);
+      box-shadow: 0 20px 40px rgba(255, 105, 180, 0.35);
+      position: relative;
+      z-index: 2;
+    }
+
     h1{
-      margin:0 0 18px 0;
-      font-size: clamp(22px, 4vw, 34px);
-      font-weight:700;
+      color:#ff4f9a;
+      margin-bottom: 24px;
+      font-size: 28px;
     }
+
     .buttons{
-      position:relative;
-      height:90px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:16px;
+      position: relative;
+      height: 90px;
+      margin-top: 10px;
     }
+
     button{
-      border:0;
-      padding:14px 22px;
-      border-radius:14px;
-      font-size:18px;
+      border:none;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-size: 18px;
       cursor:pointer;
-      transition: transform .12s ease;
+      transition: transform .15s ease, box-shadow .15s ease;
     }
-    button:active{ transform: scale(0.98); }
+
+    button:hover{
+      transform: scale(1.08);
+      box-shadow: 0 8px 20px rgba(255,105,180,0.4);
+    }
+
     #yes{
-      background:#33d17a;
+      background:#ff7eb9;
+      color:white;
     }
+
     #no{
-      background:#ff5c7c;
-      position:absolute; /* ważne: będziemy go przesuwać */
-      left: 55%;
-      top: 16px;
-    }
-    .hint{
-      margin-top:10px;
-      opacity:.7;
-      font-size:14px;
+      background:#ffd1e6;
+      color:#ff4f9a;
+      position:absolute;
+      left:55%;
+      top:10px;
     }
   </style>
 </head>
+
 <body>
-  <div class="card" id="card">
-    <h1>Will you be my Valentine?</h1>
 
-    <div class="buttons">
-      <button id="yes">YES</button>
-      <button id="no">NO</button>
-    </div>
-
-    <div class="hint">You really wanted to click „NO”?😄</div>
+  <!-- SERDUSZKA -->
+  <div class="hearts">
+    <span style="left:10%; animation-duration:8s;">💖</span>
+    <span style="left:25%; animation-duration:10s;">💗</span>
+    <span style="left:40%; animation-duration:7s;">💞</span>
+    <span style="left:60%; animation-duration:9s;">💕</span>
+    <span style="left:75%; animation-duration:11s;">💘</span>
+    <span style="left:90%; animation-duration:8.5s;">💓</span>
   </div>
 
-  <script>
-    const card = document.getElementById("card");
-    const noBtn = document.getElementById("no");
-    const yesBtn = document.getElementById("yes");
+  <div class="card" id="card">
+    <h1>Will you be my Valentine? 💕</h1>
 
-    // Klik w YES -> przejście na drugą stronę
-    yesBtn.addEventListener("click", () => {
-      window.location.href = "step2.html";
-    });
+    <div class="buttons">
+      <button id="yes">YES 💖</button>
+      <button id="no">NO 😳</button>
+    </div>
+  </div>
 
-    // Funkcja losuje nowe miejsce dla przycisku NO w obrębie "karty"
-    function moveNoButton() {
-      const cardRect = card.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
+<script>
+  const card = document.getElementById("card");
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
 
-      // margines, żeby przycisk nie uciekał poza kartę
-      const padding = 16;
+  yesBtn.onclick = () => {
+    window.location.href = "step2.html";
+  };
 
-      const maxX = cardRect.width - btnRect.width - padding;
-      const maxY = cardRect.height - btnRect.height - padding;
+  function moveNo(){
+    const c = card.getBoundingClientRect();
+    const b = noBtn.getBoundingClientRect();
+    const x = Math.random() * (c.width - b.width);
+    const y = Math.random() * (c.height - b.height - 60) + 60;
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  }
 
-      // Losowa pozycja (względem karty)
-      const x = Math.max(padding, Math.random() * maxX);
-      const y = Math.max(padding + 70, Math.random() * maxY); // +70 żeby nie wchodził w tytuł
+  noBtn.addEventListener("mouseenter", moveNo);
+</script>
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    }
-
-    // Uciekanie na sam "hover"
-    noBtn.addEventListener("mouseenter", moveNoButton);
-
-    // Dodatkowo: jak ktoś prawie go dotyka kursorem, też ucieka
-    document.addEventListener("mousemove", (e) => {
-      const b = noBtn.getBoundingClientRect();
-      const dx = e.clientX - (b.left + b.width/2);
-      const dy = e.clientY - (b.top + b.height/2);
-      const dist = Math.sqrt(dx*dx + dy*dy);
-
-      if (dist < 90) moveNoButton();
-    });
-  </script>
 </body>
 </html>
-
