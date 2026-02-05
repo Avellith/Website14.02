@@ -116,20 +116,51 @@
   const noBtn = document.getElementById("no");
   const yesBtn = document.getElementById("yes");
 
-  yesBtn.onclick = () => {
+  yesBtn.addEventListener("click", () => {
     window.location.href = "step2.html";
-  };
+  });
 
-  function moveNo(){
-    const c = card.getBoundingClientRect();
-    const b = noBtn.getBoundingClientRect();
-    const x = Math.random() * (c.width - b.width);
-    const y = Math.random() * (c.height - b.height - 60) + 60;
+  function moveNoButton() {
+    const cardRect = card.getBoundingClientRect();
+
+    // Uwaga: dla absolutnie pozycjonowanego przycisku najlepiej użyć offsetWidth/Height
+    const btnW = noBtn.offsetWidth;
+    const btnH = noBtn.offsetHeight;
+
+    const padding = 12;      // margines od krawędzi
+    const titleSafe = 70;    // żeby nie wskakiwał na nagłówek
+
+    const maxX = cardRect.width - btnW - padding;
+    const maxY = cardRect.height - btnH - padding;
+
+    const x = Math.max(padding, Math.random() * maxX);
+    const y = Math.max(titleSafe, Math.random() * maxY);
+
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
   }
 
-  noBtn.addEventListener("mouseenter", moveNo);
+  // Desktop: hover
+  noBtn.addEventListener("mouseenter", moveNoButton);
+
+  // Mobile: dotyk
+  noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();      // blokuje "kliknięcie" i zaznaczenia
+    moveNoButton();
+  }, { passive: false });
+
+  // Jedno API dla myszy i dotyku
+  document.addEventListener("pointermove", (e) => {
+    const b = noBtn.getBoundingClientRect();
+    const dx = e.clientX - (b.left + b.width / 2);
+    const dy = e.clientY - (b.top + b.height / 2);
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < 90) moveNoButton();
+  }, { passive: true });
+
+  // Na start ustaw go sensownie (czasem na mobile układ łapie po chwili)
+  window.addEventListener("load", () => setTimeout(moveNoButton, 50));
 </script>
 
 </body>
