@@ -25,6 +25,7 @@
       font-size:20px;
       animation: floatUp linear infinite;
       opacity:0.8;
+      pointer-events:none; /* ważne: żeby nie blokowały klików na telefonie */
     }
 
     @keyframes floatUp{
@@ -57,7 +58,7 @@
 
     .buttons{
       position: relative;
-      height: 90px;
+      min-height: 110px; /* mobile: trochę więcej miejsca na uciekanie NO */
       margin-top: 10px;
     }
 
@@ -68,6 +69,8 @@
       font-size: 18px;
       cursor:pointer;
       transition: transform .15s ease, box-shadow .15s ease;
+      touch-action: manipulation; /* mobile: szybsze reakcje na dotyk */
+      -webkit-tap-highlight-color: transparent; /* mobile: bez szarego podświetlenia */
     }
 
     button:hover{
@@ -103,7 +106,7 @@
   </div>
 
   <div class="card" id="card">
-    <h1>Will you be my Valentine?💕</h1>
+    <h1>Will you be my Valentine? 💕</h1>
 
     <div class="buttons">
       <button id="yes">YES 💖</button>
@@ -116,22 +119,22 @@
   const noBtn = document.getElementById("no");
   const yesBtn = document.getElementById("yes");
 
-  yesBtn.addEventListener("click", () => {
+  yesBtn.onclick = () => {
     window.location.href = "step2.html";
-  });
+  };
 
-  function moveNoButton() {
-    const cardRect = card.getBoundingClientRect();
+  function moveNo(){
+    const c = card.getBoundingClientRect();
 
-    // Uwaga: dla absolutnie pozycjonowanego przycisku najlepiej użyć offsetWidth/Height
+    // Stabilniej na telefonie niż getBoundingClientRect() dla samego przycisku
     const btnW = noBtn.offsetWidth;
     const btnH = noBtn.offsetHeight;
 
-    const padding = 12;      // margines od krawędzi
-    const titleSafe = 70;    // żeby nie wskakiwał na nagłówek
+    const padding = 12;   // margines od krawędzi karty
+    const titleSafe = 70; // żeby nie wchodził na tytuł
 
-    const maxX = cardRect.width - btnW - padding;
-    const maxY = cardRect.height - btnH - padding;
+    const maxX = c.width - btnW - padding;
+    const maxY = c.height - btnH - padding;
 
     const x = Math.max(padding, Math.random() * maxX);
     const y = Math.max(titleSafe, Math.random() * maxY);
@@ -141,26 +144,28 @@
   }
 
   // Desktop: hover
-  noBtn.addEventListener("mouseenter", moveNoButton);
+  noBtn.addEventListener("mouseenter", moveNo);
 
-  // Mobile: dotyk
+  // Telefon: dotknięcie (na mobile nie ma hover)
   noBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault();      // blokuje "kliknięcie" i zaznaczenia
-    moveNoButton();
+    e.preventDefault(); // blokuje "kliknięcie" NO
+    moveNo();
   }, { passive: false });
 
-  // Jedno API dla myszy i dotyku
+  // Uniwersalne: zbliżenie kursora/palca (działa na mysz i dotyk)
   document.addEventListener("pointermove", (e) => {
     const b = noBtn.getBoundingClientRect();
-    const dx = e.clientX - (b.left + b.width / 2);
-    const dy = e.clientY - (b.top + b.height / 2);
-    const dist = Math.sqrt(dx * dx + dy * dy);
+    const dx = e.clientX - (b.left + b.width/2);
+    const dy = e.clientY - (b.top + b.height/2);
+    const dist = Math.sqrt(dx*dx + dy*dy);
 
-    if (dist < 90) moveNoButton();
+    if (dist < 90) moveNo();
   }, { passive: true });
 
-  // Na start ustaw go sensownie (czasem na mobile układ łapie po chwili)
-  window.addEventListener("load", () => setTimeout(moveNoButton, 50));
+  // Startowa pozycja (ważne na mobile, bo layout domyka się chwilę po załadowaniu)
+  window.addEventListener("load", () => {
+    setTimeout(moveNo, 50);
+  });
 </script>
 
 </body>
