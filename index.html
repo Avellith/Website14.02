@@ -7,25 +7,33 @@
 
   <style>
     body{
-      margin:0;
-      height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-family: "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
-      background: linear-gradient(135deg, #ffb6d5, #ffd6e8);
-      overflow:hidden;
-    }
+  margin:0;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family: "Playfair Display", "Segoe UI", system-ui, sans-serif;
 
-    /* SERDUSZKA W TLE */
-    .hearts span{
-      position:absolute;
-      bottom:-20px;
-      color:#ff5fa2;
-      font-size:20px;
-      animation: floatUp linear infinite;
-      opacity:0.8;
-    }
+  /* WALENTYNKOWE WOW TŁO */
+  background:
+    linear-gradient(135deg, rgba(255,182,213,0.9), rgba(255,214,232,0.95)),
+    url("data:image/svg+xml;utf8,
+    <svg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'>
+      <rect width='220' height='220' fill='white'/>
+      <path d='M110 150
+        C110 150,40 95,40 65
+        C40 45,55 30,75 30
+        C95 30,110 45,110 45
+        C110 45,125 30,145 30
+        C165 30,180 45,180 65
+        C180 95,110 150,110 150Z'
+        fill='%23f4a3c4' opacity='0.35'/>
+    </svg>");
+  background-size: cover, 220px 220px;
+  background-repeat: no-repeat, repeat;
+  overflow:hidden;
+}
+
 
     @keyframes floatUp{
       from{
@@ -39,21 +47,27 @@
     }
 
     .card{
-      background: #fff;
-      padding: 36px;
-      border-radius: 26px;
-      text-align: center;
-      width: min(420px, 90vw);
-      box-shadow: 0 20px 40px rgba(255, 105, 180, 0.35);
-      position: relative;
-      z-index: 2;
-    }
+  background: rgba(255,255,255,0.92);
+  padding: 38px;
+  border-radius: 28px;
+  text-align: center;
+  width: min(720px, 92vw);
 
-    h1{
-      color:#ff4f9a;
-      margin-bottom: 24px;
-      font-size: 28px;
-    }
+  box-shadow:
+    0 30px 60px rgba(255,105,180,0.35),
+    inset 0 0 0 1px rgba(255,182,213,0.6);
+
+  backdrop-filter: blur(6px);
+  position: relative;
+  z-index: 2;
+}
+h1{
+  color:#c2185b;
+  margin-bottom: 22px;
+  font-size: clamp(24px, 4vw, 34px);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
 
     .buttons{
       position: relative;
