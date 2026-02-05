@@ -24,6 +24,7 @@
       font-size:22px;
       animation: floatUp linear infinite;
       opacity:0.8;
+      pointer-events:none; /* ważne: żeby nie blokowały klików na telefonie */
     }
 
     @keyframes floatUp{
@@ -52,7 +53,7 @@
 
     .buttons{
       position:relative;
-      height:90px;
+      min-height:110px; /* mobile: więcej miejsca na uciekanie NO */
     }
 
     button{
@@ -61,6 +62,8 @@
       border-radius:999px;
       font-size:18px;
       cursor:pointer;
+      touch-action: manipulation; /* mobile: szybsze tapy */
+      -webkit-tap-highlight-color: transparent; /* mobile: bez szarego podświetlenia */
     }
 
     #yes{
@@ -109,14 +112,47 @@
 
   function moveNo(){
     const c = card.getBoundingClientRect();
-    const b = noBtn.getBoundingClientRect();
-    const x = Math.random() * (c.width - b.width);
-    const y = Math.random() * (c.height - b.height - 60) + 60;
+
+    // stabilniej na telefonie niż branie wymiarów z rect przycisku
+    const btnW = noBtn.offsetWidth;
+    const btnH = noBtn.offsetHeight;
+
+    const padding = 12;
+    const titleSafe = 70;
+
+    const maxX = c.width - btnW - padding;
+    const maxY = c.height - btnH - padding;
+
+    const x = Math.max(padding, Math.random() * maxX);
+    const y = Math.max(titleSafe, Math.random() * maxY);
+
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
   }
 
+  // Desktop: hover
   noBtn.addEventListener("mouseenter", moveNo);
+
+  // Telefon: dotyk (na mobile nie ma hover)
+  noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // blokuje "kliknięcie" NO
+    moveNo();
+  }, { passive: false });
+
+  // Uniwersalne: zbliżenie kursora/palca (działa na mysz i dotyk)
+  document.addEventListener("pointermove", (e) => {
+    const b = noBtn.getBoundingClientRect();
+    const dx = e.clientX - (b.left + b.width/2);
+    const dy = e.clientY - (b.top + b.height/2);
+    const dist = Math.sqrt(dx*dx + dy*dy);
+
+    if (dist < 90) moveNo();
+  }, { passive: true });
+
+  // Startowa pozycja (ważne na mobile)
+  window.addEventListener("load", () => {
+    setTimeout(moveNo, 50);
+  });
 </script>
 
 </body>
